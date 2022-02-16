@@ -1,0 +1,122 @@
+// 321CA - Mihai Daniel Soare
+
+WARNING: urasc sa folosesc caractere mari.
+
+Tema 1 - Analiza algoritmilor
+
+Flux Maxim
+
+Etapa 2
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Problema:
+	- vrem sa gasim cantitatea de flux maxim pe care vrem s-o trimitem dintr-un
+	nod sursa intr-un nod destinatie (de la nodul 0, pana la nr_muchii - 1),
+	prin muchiile alaturate care au o capacitate maxima de flux care poate fi
+	trimis prin acestea;
+
+Algoritmi folositi:
+	- Greedy
+	- Edmonds-Karp
+	- Dinics
+
+Greedy:
+	- foloseste implementarea lui Ford-Fulkerson, doar ca nu stie sa se
+	intoarca inapoi pe o cale din graf (in caz ca nu mai exista cai disponibile
+	pentru a trimite flux)
+	- aceasta implementare are destule cazuri in care va da un flux
+	aproximativ (gresit) si asadar nu este destul de optim. Vom vedea in
+	generarea testelor cand se intampla asta.
+
+Edmonds-Karp:
+	- foloseste implementarea lui Ford-Fulkerson, doar ca in loc de dfs
+	foloseste un bfs pentru a parcurge toti vecinii si pentru a crea cai
+	intr-un graf rezidual (format din fluxul si capacitatea maxima care se 
+	poate transmite pe o anumita muchie);
+	- va da un rezultat corect pe orice caz generat;
+
+Dinics:
+	- foloseste un nou concept peste implementarea Edmonds-Karp si anume
+	graf pe nivele, pentru a calcula constant nivelul pe care fiecare nod
+	se afla fata de sursa.
+	- presupunand ca vrem sa mergem din sursa pana in destinatie (care se afla
+	in Est), algoritmul continua sa parcurga doar nodurile care se afla in
+	directa N-E, E si S-E.
+	- va da un rezultat corect pe orice caz generat si mult mai rapid;
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Input:
+	- prima linie va fi de forma:
+		V E
+		* unde V = nr de noduri, iar E = nr de muchii;
+	- urmatoarele E linii vor fi de forma:
+		from to capacity
+		* unde from = nodul sursa, to = nodul destinatie
+		capacity = capacitatea maxima de flux care poate fi transmisa pe o cale;
+
+Output:
+	- se va afisa fluxul maxim pe o linie in urma rularii unuia dintre cei 3
+	algoritmi;
+
+Generarea testelor:
+	- am folosit un cod in c++ pentru a genera grafuri conexe care au sigur
+	un drum din sursa in destinatie si fiecarei muchii ii este atribuita o
+	capacitate, va incerca sa genereze pana cand toate conditiile sunt
+	indeplinite;
+	- am stat si am generat teste folosind un script care-mi genera teste
+	pana cand algoritmul Greedy da un rezultat gresit si aceste teste au
+	fost redirectate in test.in. 
+	- rezultatele au fost verificate constant intre cei 3 algoritmi 
+	pentru a vedea timpul rularii si rezultatul acestora pentru fiecare
+	set de date;
+  
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Testele generate:
+	- au fost generate 40 de teste cu diferite specificatii;
+
+Specificatii teste:
+	(testele 1 - 5)
+		*) sunt teste generate astfel incat algoritmul greedy da by default
+		gresit fata de celelalte doua, in plus Dinics va fi tot timpul mai
+		rapid decat celelalte doua;
+	(testele 6 - 8) E = V
+		testul 6 - greedy;
+	(teste 9 - 11) E = V * logV
+		*) a fost super greu de generat macar un graf in care greedy da gresit
+	(testele 14 - 18) E = V * sqrt(V)
+		testele 16, 17 - greedy;
+	(testele 19 - 23) E = V^2;
+		*) teste foarte mari ca dimensiune
+	(testele 24 - 32)
+		*) teste cu capacitate mica
+		testele 25, 29, 30, 31, 32 - greedy
+	(testele 33 - 36) teste cu E < V ^ 1.25 si capacitate mica
+		- cu cat capacitatea este mai mica, cu atat e mai usoara generarea unui
+		graf in care algoritmul greedy da un test gresit;
+	(testele 37 - 40) teste cu E > N (N - 1)
+		*) capacitati mari, iar greedy se descurca chiar ok pe teste de genul
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Observatii algoritmi:
+	*) algoritmul greedy tinde sa greseasca rezultatul in majoritatea
+	situatiilor, in special cand capacitatile au dimensiuni foarte mici,
+	sau numarul de muchii este doar cu putin mai mic decat numarul de noduri;
+	-) de asemenea, cu cat avem mai multe noduri, cu atat e mai usor sa gasim
+	test greedy;
+	*) Dinics va executa testele mult mai rapid decat celelalte implementari
+	*) Edmond-Karps da mereu rezultat corect tot timpul, dar este mai incet
+	decat Dinics;
+	*) Greedy poate da gresit ++ e cel mai incet dintre cele 3;
+
+Observatii implementari:
+	- am incurcat numele (to, from) in implementarile algoritmilor si nu le mai
+	schimb
+	- am folosit variabile globale sa nu ma joc cu memoria (nefiind scopul
+	asta scopul temei)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
