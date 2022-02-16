@@ -1,4 +1,4 @@
-// 321CA -- Analiza Algoritmilor 2021 - 2022 -- Mihai Daniel Soare
+321CA -- Analiza Algoritmilor 2021 - 2022 -- Mihai Daniel Soare
 
 Analiza Algoritmilor
 
